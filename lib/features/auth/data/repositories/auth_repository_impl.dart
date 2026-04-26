@@ -37,15 +37,26 @@ class AuthRepositoryImpl implements AuthRepository {
       throw Exception('Invalid email or password');
     }
 
+    await _storageService.saveSession(email: savedUser.email);
+
     return User(email: savedUser.email, password: savedUser.password);
   }
 
   @override
   Future<User?> getCurrentUser() async {
+    final String? sessionEmail = _storageService.getSessionEmail();
+    if (sessionEmail == null) {
+      return null;
+    }
+
     final ({String email, String password})? savedUser =
         _storageService.getUser();
 
     if (savedUser == null) {
+      return null;
+    }
+
+    if (savedUser.email != sessionEmail) {
       return null;
     }
 
@@ -54,7 +65,7 @@ class AuthRepositoryImpl implements AuthRepository {
 
   @override
   Future<void> logout() async {
-    await _storageService.clearUser();
+    await _storageService.clearSession();
   }
 
   String _hashPassword(String rawPassword) {
