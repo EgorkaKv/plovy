@@ -66,7 +66,7 @@ class HomePage extends StatelessWidget {
                     AppButton(
                       text: 'Settings',
                       onPressed: () {
-                        context.go(AppRoutes.settings);
+                        context.push(AppRoutes.settings);
                       },
                     ),
                     const SizedBox(height: 12),
