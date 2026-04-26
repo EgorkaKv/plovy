@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:plovy/features/auth/presentation/pages/login_page.dart';
+import 'package:plovy/features/auth/presentation/pages/register_page.dart';
+import 'package:plovy/features/home/presentation/pages/home_page.dart';
+import 'package:plovy/features/settings/presentation/pages/settings_page.dart';
 
 class AppRoutes {
   static const String login = '/login';
@@ -14,40 +18,26 @@ final GoRouter appRouter = GoRouter(
     GoRoute(
       path: AppRoutes.login,
       builder: (BuildContext context, GoRouterState state) {
-        return const _RoutePlaceholderPage(title: 'Login');
+        return const LoginPage();
       },
     ),
     GoRoute(
       path: AppRoutes.register,
       builder: (BuildContext context, GoRouterState state) {
-        return const _RoutePlaceholderPage(title: 'Register');
+        return const RegisterPage();
       },
     ),
     GoRoute(
       path: AppRoutes.home,
       builder: (BuildContext context, GoRouterState state) {
-        return const _RoutePlaceholderPage(title: 'Home');
+        return const HomePage();
       },
     ),
     GoRoute(
       path: AppRoutes.settings,
       builder: (BuildContext context, GoRouterState state) {
-        return const _RoutePlaceholderPage(title: 'Settings');
+        return const SettingsPage();
       },
     ),
   ],
 );
-
-class _RoutePlaceholderPage extends StatelessWidget {
-  const _RoutePlaceholderPage({required this.title});
-
-  final String title;
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: Text(title)),
-      body: Center(child: Text('$title page placeholder')),
-    );
-  }
-}
