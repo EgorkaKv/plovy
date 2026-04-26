@@ -52,7 +52,7 @@ class HomePage extends StatelessWidget {
                     AppButton(
                       text: 'Scan face',
                       onPressed: () {
-                        debugPrint('Scan face tapped');
+                        context.push(AppRoutes.camera);
                       },
                     ),
                     const SizedBox(height: 12),

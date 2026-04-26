@@ -5,11 +5,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 final GetIt getIt = GetIt.instance;
 
-@InjectableInit(
-  initializerName: r'$initGetIt',
-  preferRelativeImports: true,
-  asExtension: true,
-)
+@InjectableInit(initializerName: r'$initGetIt')
 Future<void> configureDependencies() async {
   await getIt.$initGetIt();
 }
