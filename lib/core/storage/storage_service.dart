@@ -8,29 +8,29 @@ class StorageService {
   final SharedPreferences _prefs;
 
   static const String _emailKey = 'user_email';
-  static const String _passwordHashKey = 'user_password_hash';
+  static const String _passwordKey = 'user_password_hash';
 
   Future<void> saveUser({
     required String email,
-    required String passwordHash,
+    required String password,
   }) async {
     await _prefs.setString(_emailKey, email);
-    await _prefs.setString(_passwordHashKey, passwordHash);
+    await _prefs.setString(_passwordKey, password);
   }
 
-  ({String email, String passwordHash})? getUser() {
+  ({String email, String password})? getUser() {
     final String? email = _prefs.getString(_emailKey);
-    final String? passwordHash = _prefs.getString(_passwordHashKey);
+    final String? password = _prefs.getString(_passwordKey);
 
-    if (email == null || passwordHash == null) {
+    if (email == null || password == null) {
       return null;
     }
 
-    return (email: email, passwordHash: passwordHash);
+    return (email: email, password: password);
   }
 
   Future<void> clearUser() async {
     await _prefs.remove(_emailKey);
-    await _prefs.remove(_passwordHashKey);
+    await _prefs.remove(_passwordKey);
   }
 }
