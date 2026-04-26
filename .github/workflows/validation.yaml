@@ -1,0 +1,24 @@
+name: Flutter Validation
+
+on:
+  pull_request:
+    branches: [ "main", "develop" ]
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: 'stable'
+
+      - name: Install dependencies
+        run: flutter pub get
+
+      - name: Check format
+        run: flutter format --set-exit-if-changed lib/ test/
+
+      - name: Analyze code
+        run: flutter analyze
