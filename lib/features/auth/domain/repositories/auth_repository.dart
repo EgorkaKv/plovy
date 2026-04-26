@@ -1,7 +1,17 @@
-abstract class AuthRepository {
-  Future<void> register({required String email, required String password});
+import 'package:plovy/features/auth/domain/entities/user.dart';
 
-  Future<void> login({required String email, required String password});
+abstract class AuthRepository {
+  Future<void> register({
+    required String email,
+    required String password,
+  });
+
+  Future<User> login({
+    required String email,
+    required String password,
+  });
+
+  Future<User?> getCurrentUser();
 
   Future<void> logout();
 }
