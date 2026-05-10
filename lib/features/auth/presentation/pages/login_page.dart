@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
+import 'package:plovy/core/connection/connectivity_service.dart';
+import 'package:plovy/core/di/injection.dart';
 import 'package:plovy/core/routing/app_router.dart';
 import 'package:plovy/core/widgets/app_button.dart';
 import 'package:plovy/core/widgets/app_text_field.dart';
@@ -17,6 +19,18 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    getIt<ConnectivityService>().isConnected().then((bool online) {
+      if (!online && mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('No internet connection')),
+        );
+      }
+    });
+  }
 
   @override
   void dispose() {

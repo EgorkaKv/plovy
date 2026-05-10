@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
+import 'package:plovy/core/di/injection.dart';
+import 'package:plovy/core/mqtt/mqtt_service.dart';
 import 'package:plovy/core/routing/app_router.dart';
-import 'package:plovy/core/widgets/app_button.dart';
 import 'package:plovy/features/auth/presentation/bloc/auth_bloc.dart';
 
 class SettingsPage extends StatelessWidget {
@@ -29,13 +30,37 @@ class SettingsPage extends StatelessWidget {
                   mainAxisSize: MainAxisSize.min,
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: <Widget>[
-                    const Text(
-                      'MQTT: disconnected',
-                      textAlign: TextAlign.center,
+                    StreamBuilder<bool>(
+                      stream: getIt<MqttService>().statusStream,
+                      initialData: getIt<MqttService>().isConnected,
+                      builder: (
+                        BuildContext context,
+                        AsyncSnapshot<bool> snap,
+                      ) {
+                        final bool connected = snap.data ?? false;
+                        return Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[
+                            Icon(
+                              Icons.circle,
+                              size: 12,
+                              color: connected ? Colors.green : Colors.grey,
+                            ),
+                            const SizedBox(width: 8),
+                            Text(
+                              connected
+                                  ? 'MQTT: connected'
+                                  : 'MQTT: disconnected',
+                              style: Theme.of(context).textTheme.bodyLarge,
+                            ),
+                          ],
+                        );
+                      },
                     ),
-                    const SizedBox(height: 16),
-                    AppButton(
-                      text: 'Logout',
+                    const SizedBox(height: 24),
+                    FilledButton.icon(
+                      icon: const Icon(Icons.logout),
+                      label: const Text('Logout'),
                       onPressed: () {
                         context.read<AuthBloc>().add(const LogoutEvent());
                       },

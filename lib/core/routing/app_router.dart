@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+
+import 'package:plovy/core/di/injection.dart';
 import 'package:plovy/features/auth/presentation/pages/login_page.dart';
 import 'package:plovy/features/auth/presentation/pages/register_page.dart';
 import 'package:plovy/features/auth/presentation/pages/splash_page.dart';
 import 'package:plovy/features/face_mesh/presentation/pages/camera_page.dart';
+import 'package:plovy/features/home/presentation/bloc/home_bloc.dart';
 import 'package:plovy/features/home/presentation/pages/home_page.dart';
 import 'package:plovy/features/settings/presentation/pages/settings_page.dart';
 
@@ -40,7 +44,10 @@ final GoRouter appRouter = GoRouter(
     GoRoute(
       path: AppRoutes.home,
       builder: (BuildContext context, GoRouterState state) {
-        return const HomePage();
+        return BlocProvider<HomeBloc>(
+          create: (_) => getIt<HomeBloc>()..add(const HomeStarted()),
+          child: const HomePage(),
+        );
       },
     ),
     GoRoute(
