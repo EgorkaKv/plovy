@@ -13,9 +13,10 @@ import 'package:get_it/get_it.dart' as _i174;
 import 'package:injectable/injectable.dart' as _i526;
 import 'package:shared_preferences/shared_preferences.dart' as _i460;
 
-import '../../features/auth/data/repositories/fake_auth_repository.dart'
-    as _i177;
+import '../../features/auth/data/repositories/auth_repository_impl.dart'
+    as _i153;
 import '../../features/auth/domain/repositories/auth_repository.dart' as _i787;
+import '../../features/auth/presentation/bloc/auth_bloc.dart' as _i797;
 import '../storage/storage_service.dart' as _i865;
 import 'injection.dart' as _i464;
 
@@ -31,9 +32,14 @@ extension GetItInjectableX on _i174.GetIt {
       () => registerModule.prefs,
       preResolve: true,
     );
-    gh.lazySingleton<_i787.AuthRepository>(() => _i177.FakeAuthRepository());
     gh.lazySingleton<_i865.StorageService>(
       () => _i865.StorageService(gh<_i460.SharedPreferences>()),
+    );
+    gh.lazySingleton<_i787.AuthRepository>(
+      () => _i153.AuthRepositoryImpl(gh<_i865.StorageService>()),
+    );
+    gh.factory<_i797.AuthBloc>(
+      () => _i797.AuthBloc(gh<_i787.AuthRepository>()),
     );
     return this;
   }
