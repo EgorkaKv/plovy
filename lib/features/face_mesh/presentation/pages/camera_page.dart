@@ -224,6 +224,16 @@ class _CameraPageState extends State<CameraPage> {
     return (processingRotation + 90) % 360;
   }
 
+  // Returns the image size as it appears on screen (portrait-oriented).
+  // The raw Android camera frame is landscape, so width/height must be
+  // swapped whenever the processing rotation is 90° or 270°.
+  Size? _orientedImageSize(int processingRotation) {
+    final Size? raw = _cameraImageSize;
+    if (raw == null) return null;
+    final bool swapped = processingRotation == 90 || processingRotation == 270;
+    return swapped ? Size(raw.height, raw.width) : raw;
+  }
+
   bool get _isFaceDetected {
     return _meshResult != null && _meshResult!.landmarks.isNotEmpty;
   }
@@ -294,7 +304,9 @@ class _CameraPageState extends State<CameraPage> {
                           _streamRotationDegrees ?? 0,
                         ),
                         lensDirection: controller.description.lensDirection,
-                        imageSize: _cameraImageSize,
+                        imageSize: _orientedImageSize(
+                          _streamRotationDegrees ?? 0,
+                        ),
                       ),
                     ),
                   Positioned(

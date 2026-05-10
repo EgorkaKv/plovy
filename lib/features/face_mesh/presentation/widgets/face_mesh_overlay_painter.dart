@@ -58,25 +58,31 @@ class FaceMeshOverlayPainter extends CustomPainter {
   }
 
   Rect _computePreviewRect(Size canvasSize) {
-    final Size? raw = imageSize;
-    if (raw == null) return Offset.zero & canvasSize;
+    final Size? img = imageSize;
+    if (img == null) return Offset.zero & canvasSize;
 
-    // After 90° or 270° rotation the image width and height are swapped
-    final bool swapped = rotationDegrees == 90 || rotationDegrees == 270;
-    final double imgW = swapped ? raw.height : raw.width;
-    final double imgH = swapped ? raw.width : raw.height;
-
-    final double imgAspect = imgW / imgH;
+    // imageSize is already orientation-corrected by the caller
+    final double imgAspect = img.width / img.height;
     final double canvasAspect = canvasSize.width / canvasSize.height;
 
     if (imgAspect > canvasAspect) {
       // Image wider than canvas — letterbox top/bottom
       final double h = canvasSize.width / imgAspect;
-      return Rect.fromLTWH(0, (canvasSize.height - h) / 2, canvasSize.width, h);
+      return Rect.fromLTWH(
+        0,
+        (canvasSize.height - h) / 2,
+        canvasSize.width,
+        h,
+      );
     } else {
       // Image taller than canvas — letterbox left/right
       final double w = canvasSize.height * imgAspect;
-      return Rect.fromLTWH((canvasSize.width - w) / 2, 0, w, canvasSize.height);
+      return Rect.fromLTWH(
+        (canvasSize.width - w) / 2,
+        0,
+        w,
+        canvasSize.height,
+      );
     }
   }
 
