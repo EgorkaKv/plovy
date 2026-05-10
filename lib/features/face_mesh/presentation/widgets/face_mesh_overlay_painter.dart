@@ -9,6 +9,7 @@ class FaceMeshOverlayPainter extends CustomPainter {
     required this.result,
     required this.rotationDegrees,
     required this.lensDirection,
+    this.imageSize,
     this.strokeColor = Colors.greenAccent,
     this.strokeWidth = 0.45,
   });
@@ -16,11 +17,13 @@ class FaceMeshOverlayPainter extends CustomPainter {
   final FaceMeshResult result;
   final int rotationDegrees;
   final CameraLensDirection lensDirection;
+  final Size? imageSize;
   final Color strokeColor;
   final double strokeWidth;
 
   @override
   void paint(Canvas canvas, Size size) {
+    final Rect previewRect = _computePreviewRect(size);
     final Paint paint =
         Paint()
           ..color = strokeColor
@@ -28,29 +31,53 @@ class FaceMeshOverlayPainter extends CustomPainter {
           ..strokeWidth = strokeWidth;
 
     for (final MpFaceMeshTriangle triangle in result.triangles) {
-      final Offset p0 = _map(triangle.points[0], size);
-      final Offset p1 = _map(triangle.points[1], size);
-      final Offset p2 = _map(triangle.points[2], size);
+      final Offset p0 = _mapToRect(triangle.points[0], previewRect);
+      final Offset p1 = _mapToRect(triangle.points[1], previewRect);
+      final Offset p2 = _mapToRect(triangle.points[2], previewRect);
 
-      final Path path =
-          Path()
-            ..moveTo(p0.dx, p0.dy)
-            ..lineTo(p1.dx, p1.dy)
-            ..lineTo(p2.dx, p2.dy)
-            ..close();
-
-      canvas.drawPath(path, paint);
+      canvas.drawPath(
+        Path()
+          ..moveTo(p0.dx, p0.dy)
+          ..lineTo(p1.dx, p1.dy)
+          ..lineTo(p2.dx, p2.dy)
+          ..close(),
+        paint,
+      );
     }
   }
 
-  Offset _map(FaceMeshLandmark landmark, Size size) {
-    return result.landmarkAsOffset(
+  Offset _mapToRect(FaceMeshLandmark landmark, Rect rect) {
+    final Offset normalized = result.landmarkAsOffset(
       landmark,
-      targetSize: size,
+      targetSize: rect.size,
       rotationDegrees: rotationDegrees,
       mirrorHorizontal:
           !Platform.isIOS && lensDirection == CameraLensDirection.front,
     );
+    return normalized + rect.topLeft;
+  }
+
+  Rect _computePreviewRect(Size canvasSize) {
+    final Size? raw = imageSize;
+    if (raw == null) return Offset.zero & canvasSize;
+
+    // After 90° or 270° rotation the image width and height are swapped
+    final bool swapped = rotationDegrees == 90 || rotationDegrees == 270;
+    final double imgW = swapped ? raw.height : raw.width;
+    final double imgH = swapped ? raw.width : raw.height;
+
+    final double imgAspect = imgW / imgH;
+    final double canvasAspect = canvasSize.width / canvasSize.height;
+
+    if (imgAspect > canvasAspect) {
+      // Image wider than canvas — letterbox top/bottom
+      final double h = canvasSize.width / imgAspect;
+      return Rect.fromLTWH(0, (canvasSize.height - h) / 2, canvasSize.width, h);
+    } else {
+      // Image taller than canvas — letterbox left/right
+      final double w = canvasSize.height * imgAspect;
+      return Rect.fromLTWH((canvasSize.width - w) / 2, 0, w, canvasSize.height);
+    }
   }
 
   @override
@@ -58,6 +85,7 @@ class FaceMeshOverlayPainter extends CustomPainter {
     return oldDelegate.result != result ||
         oldDelegate.rotationDegrees != rotationDegrees ||
         oldDelegate.lensDirection != lensDirection ||
+        oldDelegate.imageSize != imageSize ||
         oldDelegate.strokeColor != strokeColor ||
         oldDelegate.strokeWidth != strokeWidth;
   }

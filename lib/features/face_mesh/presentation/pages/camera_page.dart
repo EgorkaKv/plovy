@@ -37,6 +37,7 @@ class _CameraPageState extends State<CameraPage> {
   FaceMeshResult? _meshResult;
   String? _errorMessage;
   int? _streamRotationDegrees;
+  Size? _cameraImageSize;
   bool _isInitializing = true;
   bool _isFrameInFlight = false;
 
@@ -111,6 +112,10 @@ class _CameraPageState extends State<CameraPage> {
       return;
     }
 
+    _cameraImageSize = Size(
+      cameraImage.width.toDouble(),
+      cameraImage.height.toDouble(),
+    );
     _ensureStreamReady(rotationDegrees);
 
     if (Platform.isAndroid) {
@@ -215,6 +220,10 @@ class _CameraPageState extends State<CameraPage> {
     return 0;
   }
 
+  int _displayRotationDegrees(int processingRotation) {
+    return (processingRotation + 90) % 360;
+  }
+
   bool get _isFaceDetected {
     return _meshResult != null && _meshResult!.landmarks.isNotEmpty;
   }
@@ -281,8 +290,11 @@ class _CameraPageState extends State<CameraPage> {
                     CustomPaint(
                       painter: FaceMeshOverlayPainter(
                         result: _meshResult!,
-                        rotationDegrees: _streamRotationDegrees ?? 0,
+                        rotationDegrees: _displayRotationDegrees(
+                          _streamRotationDegrees ?? 0,
+                        ),
                         lensDirection: controller.description.lensDirection,
+                        imageSize: _cameraImageSize,
                       ),
                     ),
                   Positioned(
