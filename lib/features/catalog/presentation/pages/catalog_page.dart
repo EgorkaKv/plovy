@@ -1,42 +1,22 @@
 import 'package:flutter/material.dart';
-import 'package:plovy/core/di/injection.dart';
-import 'package:plovy/features/catalog/domain/repositories/hairstyle_repository.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:plovy/features/catalog/presentation/bloc/catalog_bloc.dart';
 import 'package:plovy/features/catalog/presentation/widgets/hairstyle_card.dart';
 
-class CatalogPage extends StatefulWidget {
+class CatalogPage extends StatelessWidget {
   const CatalogPage({super.key});
-
-  @override
-  State<CatalogPage> createState() => _CatalogPageState();
-}
-
-class _CatalogPageState extends State<CatalogPage> {
-  late Future<HairstyleResult> _future;
-
-  @override
-  void initState() {
-    super.initState();
-    _future = getIt<HairstyleRepository>().getHairstyles();
-  }
-
-  void _retry() {
-    setState(() {
-      _future = getIt<HairstyleRepository>().getHairstyles();
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text('Hairstyle Catalog')),
-      body: FutureBuilder<HairstyleResult>(
-        future: _future,
-        builder: (BuildContext context, AsyncSnapshot<HairstyleResult> snap) {
-          if (snap.connectionState == ConnectionState.waiting) {
+      body: BlocBuilder<CatalogBloc, CatalogState>(
+        builder: (BuildContext context, CatalogState state) {
+          if (state is CatalogLoading) {
             return const Center(child: CircularProgressIndicator());
           }
 
-          if (snap.hasError) {
+          if (state is CatalogError) {
             return Center(
               child: Padding(
                 padding: const EdgeInsets.all(24),
@@ -54,7 +34,9 @@ class _CatalogPageState extends State<CatalogPage> {
                     ElevatedButton.icon(
                       icon: const Icon(Icons.refresh),
                       label: const Text('Retry'),
-                      onPressed: _retry,
+                      onPressed: () => context
+                          .read<CatalogBloc>()
+                          .add(const CatalogRefreshRequested()),
                     ),
                   ],
                 ),
@@ -62,7 +44,7 @@ class _CatalogPageState extends State<CatalogPage> {
             );
           }
 
-          final result = snap.data!;
+          final result = (state as CatalogLoaded).result;
           return Column(
             children: <Widget>[
               if (result.isFromCache)
@@ -73,7 +55,8 @@ class _CatalogPageState extends State<CatalogPage> {
                         : 'Отображаются данные из кеша',
                   ),
                   backgroundColor: Colors.amber.shade100,
-                  leading: const Icon(Icons.info_outline, color: Colors.orange),
+                  leading:
+                      const Icon(Icons.info_outline, color: Colors.orange),
                   actions: <Widget>[
                     TextButton(
                       onPressed: () => ScaffoldMessenger.of(context)
@@ -89,7 +72,8 @@ class _CatalogPageState extends State<CatalogPage> {
                   itemBuilder: (BuildContext context, int index) {
                     return Padding(
                       padding: const EdgeInsets.only(bottom: 12),
-                      child: HairstyleCard(hairstyle: result.hairstyles[index]),
+                      child:
+                          HairstyleCard(hairstyle: result.hairstyles[index]),
                     );
                   },
                 ),

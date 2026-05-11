@@ -2,14 +2,16 @@ import 'package:flutter/material.dart';
 
 class AppTextField extends StatelessWidget {
   const AppTextField({
-    required this.controller,
     required this.hintText,
     super.key,
+    this.controller,
+    this.onChanged,
     this.obscureText = false,
     this.validator,
   });
 
-  final TextEditingController controller;
+  final TextEditingController? controller;
+  final ValueChanged<String>? onChanged;
   final String hintText;
   final bool obscureText;
   final FormFieldValidator<String>? validator;
@@ -18,6 +20,7 @@ class AppTextField extends StatelessWidget {
   Widget build(BuildContext context) {
     return TextFormField(
       controller: controller,
+      onChanged: onChanged,
       obscureText: obscureText,
       validator: validator,
       decoration: InputDecoration(
