@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:plovy/features/catalog/domain/entities/hairstyle.dart';
 
@@ -13,11 +14,16 @@ class HairstyleCard extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: <Widget>[
-          Image.network(
-            hairstyle.imageUrl,
+          CachedNetworkImage(
+            imageUrl: hairstyle.imageUrl,
             height: 160,
+            width: double.infinity,
             fit: BoxFit.cover,
-            errorBuilder: (_, __, ___) => Container(
+            placeholder: (_, __) => const SizedBox(
+              height: 160,
+              child: Center(child: CircularProgressIndicator()),
+            ),
+            errorWidget: (_, __, ___) => Container(
               height: 160,
               color: Colors.grey.shade200,
               child: const Icon(
@@ -26,20 +32,6 @@ class HairstyleCard extends StatelessWidget {
                 color: Colors.grey,
               ),
             ),
-            loadingBuilder: (_, Widget child, ImageChunkEvent? progress) {
-              if (progress == null) return child;
-              return SizedBox(
-                height: 160,
-                child: Center(
-                  child: CircularProgressIndicator(
-                    value: progress.expectedTotalBytes != null
-                        ? progress.cumulativeBytesLoaded /
-                            progress.expectedTotalBytes!
-                        : null,
-                  ),
-                ),
-              );
-            },
           ),
           Padding(
             padding: const EdgeInsets.all(12),
