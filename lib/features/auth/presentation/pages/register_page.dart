@@ -6,27 +6,10 @@ import 'package:plovy/core/routing/app_router.dart';
 import 'package:plovy/core/widgets/app_button.dart';
 import 'package:plovy/core/widgets/app_text_field.dart';
 import 'package:plovy/features/auth/presentation/bloc/auth_bloc.dart';
+import 'package:plovy/features/auth/presentation/bloc/register_form_bloc.dart';
 
-class RegisterPage extends StatefulWidget {
+class RegisterPage extends StatelessWidget {
   const RegisterPage({super.key});
-
-  @override
-  State<RegisterPage> createState() => _RegisterPageState();
-}
-
-class _RegisterPageState extends State<RegisterPage> {
-  final TextEditingController _emailController = TextEditingController();
-  final TextEditingController _passwordController = TextEditingController();
-  final TextEditingController _confirmPasswordController =
-      TextEditingController();
-
-  @override
-  void dispose() {
-    _emailController.dispose();
-    _passwordController.dispose();
-    _confirmPasswordController.dispose();
-    super.dispose();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -43,7 +26,7 @@ class _RegisterPageState extends State<RegisterPage> {
             ).showSnackBar(SnackBar(content: Text(state.message)));
           }
         },
-        builder: (BuildContext context, AuthState state) {
+        builder: (BuildContext context, AuthState authState) {
           return SafeArea(
             child: Center(
               child: SingleChildScrollView(
@@ -55,43 +38,50 @@ class _RegisterPageState extends State<RegisterPage> {
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: <Widget>[
                       AppTextField(
-                        controller: _emailController,
                         hintText: 'Email',
+                        onChanged: (v) => context
+                            .read<RegisterFormBloc>()
+                            .add(RegisterEmailChanged(v)),
                       ),
                       const SizedBox(height: 12),
                       AppTextField(
-                        controller: _passwordController,
                         hintText: 'Password',
                         obscureText: true,
+                        onChanged: (v) => context
+                            .read<RegisterFormBloc>()
+                            .add(RegisterPasswordChanged(v)),
                       ),
                       const SizedBox(height: 12),
                       AppTextField(
-                        controller: _confirmPasswordController,
                         hintText: 'Confirm password',
                         obscureText: true,
+                        onChanged: (v) => context
+                            .read<RegisterFormBloc>()
+                            .add(RegisterConfirmPasswordChanged(v)),
                       ),
                       const SizedBox(height: 16),
-                      AppButton(
-                        text: 'Register',
-                        isLoading: state is AuthLoading,
-                        onPressed: () {
-                          if (_passwordController.text !=
-                              _confirmPasswordController.text) {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
-                                content: Text('Passwords do not match'),
-                              ),
-                            );
-                            return;
-                          }
-
-                          context.read<AuthBloc>().add(
-                            RegisterEvent(
-                              email: _emailController.text,
-                              password: _passwordController.text,
-                            ),
-                          );
-                        },
+                      BlocBuilder<RegisterFormBloc, RegisterFormState>(
+                        builder: (context, formState) => AppButton(
+                          text: 'Register',
+                          isLoading: authState is AuthLoading,
+                          onPressed: () {
+                            if (formState.password !=
+                                formState.confirmPassword) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                  content: Text('Passwords do not match'),
+                                ),
+                              );
+                              return;
+                            }
+                            context.read<AuthBloc>().add(
+                                  RegisterEvent(
+                                    email: formState.email,
+                                    password: formState.password,
+                                  ),
+                                );
+                          },
+                        ),
                       ),
                     ],
                   ),

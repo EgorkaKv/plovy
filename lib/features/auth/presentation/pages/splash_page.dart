@@ -5,19 +5,8 @@ import 'package:go_router/go_router.dart';
 import 'package:plovy/core/routing/app_router.dart';
 import 'package:plovy/features/auth/presentation/bloc/auth_bloc.dart';
 
-class SplashPage extends StatefulWidget {
+class SplashPage extends StatelessWidget {
   const SplashPage({super.key});
-
-  @override
-  State<SplashPage> createState() => _SplashPageState();
-}
-
-class _SplashPageState extends State<SplashPage> {
-  @override
-  void initState() {
-    super.initState();
-    context.read<AuthBloc>().add(const CheckAuthEvent());
-  }
 
   @override
   Widget build(BuildContext context) {

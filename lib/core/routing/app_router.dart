@@ -3,9 +3,14 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
 import 'package:plovy/core/di/injection.dart';
+import 'package:plovy/features/auth/presentation/bloc/auth_bloc.dart';
+import 'package:plovy/features/auth/presentation/bloc/login_form_bloc.dart';
+import 'package:plovy/features/auth/presentation/bloc/register_form_bloc.dart';
 import 'package:plovy/features/auth/presentation/pages/login_page.dart';
 import 'package:plovy/features/auth/presentation/pages/register_page.dart';
 import 'package:plovy/features/auth/presentation/pages/splash_page.dart';
+import 'package:plovy/features/catalog/domain/repositories/hairstyle_repository.dart';
+import 'package:plovy/features/catalog/presentation/bloc/catalog_bloc.dart';
 import 'package:plovy/features/catalog/presentation/pages/catalog_page.dart';
 import 'package:plovy/features/face_mesh/presentation/pages/camera_page.dart';
 import 'package:plovy/features/home/presentation/bloc/home_bloc.dart';
@@ -28,19 +33,26 @@ final GoRouter appRouter = GoRouter(
     GoRoute(
       path: AppRoutes.splash,
       builder: (BuildContext context, GoRouterState state) {
+        context.read<AuthBloc>().add(const CheckAuthEvent());
         return const SplashPage();
       },
     ),
     GoRoute(
       path: AppRoutes.login,
       builder: (BuildContext context, GoRouterState state) {
-        return const LoginPage();
+        return BlocProvider(
+          create: (_) => LoginFormBloc(),
+          child: const LoginPage(),
+        );
       },
     ),
     GoRoute(
       path: AppRoutes.register,
       builder: (BuildContext context, GoRouterState state) {
-        return const RegisterPage();
+        return BlocProvider(
+          create: (_) => RegisterFormBloc(),
+          child: const RegisterPage(),
+        );
       },
     ),
     GoRoute(
@@ -67,7 +79,11 @@ final GoRouter appRouter = GoRouter(
     GoRoute(
       path: AppRoutes.catalog,
       builder: (BuildContext context, GoRouterState state) {
-        return const CatalogPage();
+        return BlocProvider(
+          create: (_) => CatalogBloc(getIt<HairstyleRepository>())
+            ..add(const CatalogStarted()),
+          child: const CatalogPage(),
+        );
       },
     ),
   ],
