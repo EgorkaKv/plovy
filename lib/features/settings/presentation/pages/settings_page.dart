@@ -6,6 +6,7 @@ import 'package:plovy/core/di/injection.dart';
 import 'package:plovy/core/mqtt/mqtt_service.dart';
 import 'package:plovy/core/routing/app_router.dart';
 import 'package:plovy/features/auth/presentation/bloc/auth_bloc.dart';
+import 'package:plovy/features/catalog/domain/repositories/hairstyle_repository.dart';
 
 class SettingsPage extends StatelessWidget {
   const SettingsPage({super.key});
@@ -58,6 +59,19 @@ class SettingsPage extends StatelessWidget {
                       },
                     ),
                     const SizedBox(height: 24),
+                    OutlinedButton.icon(
+                      icon: const Icon(Icons.delete_sweep),
+                      label: const Text('Clear hairstyle cache'),
+                      onPressed: () async {
+                        await getIt<HairstyleRepository>().clearCache();
+                        if (context.mounted) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(content: Text('Cache cleared')),
+                          );
+                        }
+                      },
+                    ),
+                    const SizedBox(height: 12),
                     FilledButton.icon(
                       icon: const Icon(Icons.logout),
                       label: const Text('Logout'),

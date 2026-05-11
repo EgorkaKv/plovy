@@ -6,6 +6,7 @@ import 'package:plovy/core/di/injection.dart';
 import 'package:plovy/features/auth/presentation/pages/login_page.dart';
 import 'package:plovy/features/auth/presentation/pages/register_page.dart';
 import 'package:plovy/features/auth/presentation/pages/splash_page.dart';
+import 'package:plovy/features/catalog/presentation/pages/catalog_page.dart';
 import 'package:plovy/features/face_mesh/presentation/pages/camera_page.dart';
 import 'package:plovy/features/home/presentation/bloc/home_bloc.dart';
 import 'package:plovy/features/home/presentation/pages/home_page.dart';
@@ -18,6 +19,7 @@ class AppRoutes {
   static const String home = '/home';
   static const String settings = '/settings';
   static const String camera = '/camera';
+  static const String catalog = '/catalog';
 }
 
 final GoRouter appRouter = GoRouter(
@@ -60,6 +62,12 @@ final GoRouter appRouter = GoRouter(
       path: AppRoutes.camera,
       builder: (BuildContext context, GoRouterState state) {
         return const CameraPage();
+      },
+    ),
+    GoRoute(
+      path: AppRoutes.catalog,
+      builder: (BuildContext context, GoRouterState state) {
+        return const CatalogPage();
       },
     ),
   ],
