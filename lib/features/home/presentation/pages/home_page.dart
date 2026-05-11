@@ -127,32 +127,69 @@ class HomePage extends StatelessWidget {
                 const Divider(height: 1),
                 Padding(
                   padding: const EdgeInsets.all(12),
-                  child: Row(
-                    children: <Widget>[
-                      Expanded(
-                        child: OutlinedButton.icon(
-                          icon: const Icon(Icons.face),
-                          label: const Text('Scan face'),
-                          onPressed: () => context.push(AppRoutes.camera),
+                  child: BlocBuilder<HomeBloc, HomeState>(
+                    buildWhen: (prev, curr) =>
+                        prev.isFlashlightOn != curr.isFlashlightOn,
+                    builder: (context, state) => Column(
+                      children: <Widget>[
+                        Row(
+                          children: <Widget>[
+                            Expanded(
+                              child: OutlinedButton.icon(
+                                icon: const Icon(Icons.face),
+                                label: const Text('Scan face'),
+                                onPressed: () =>
+                                    context.push(AppRoutes.camera),
+                              ),
+                            ),
+                            const SizedBox(width: 8),
+                            Expanded(
+                              child: OutlinedButton.icon(
+                                icon: const Icon(Icons.content_cut),
+                                label: const Text('Catalog'),
+                                onPressed: () =>
+                                    context.push(AppRoutes.catalog),
+                              ),
+                            ),
+                            const SizedBox(width: 8),
+                            Expanded(
+                              child: FilledButton.icon(
+                                icon: const Icon(Icons.logout),
+                                label: const Text('Logout'),
+                                onPressed: () => _confirmLogout(context),
+                              ),
+                            ),
+                          ],
                         ),
-                      ),
-                      const SizedBox(width: 8),
-                      Expanded(
-                        child: OutlinedButton.icon(
-                          icon: const Icon(Icons.content_cut),
-                          label: const Text('Catalog'),
-                          onPressed: () => context.push(AppRoutes.catalog),
+                        const SizedBox(height: 8),
+                        SizedBox(
+                          width: double.infinity,
+                          child: FilledButton.icon(
+                            style: FilledButton.styleFrom(
+                              backgroundColor: state.isFlashlightOn
+                                  ? Colors.amber
+                                  : null,
+                              foregroundColor: state.isFlashlightOn
+                                  ? Colors.black
+                                  : null,
+                            ),
+                            icon: Icon(
+                              state.isFlashlightOn
+                                  ? Icons.flashlight_on
+                                  : Icons.flashlight_off,
+                            ),
+                            label: Text(
+                              state.isFlashlightOn
+                                  ? 'Flashlight: ON'
+                                  : 'Flashlight: OFF',
+                            ),
+                            onPressed: () => context
+                                .read<HomeBloc>()
+                                .add(const HomeFlashlightToggled()),
+                          ),
                         ),
-                      ),
-                      const SizedBox(width: 8),
-                      Expanded(
-                        child: FilledButton.icon(
-                          icon: const Icon(Icons.logout),
-                          label: const Text('Logout'),
-                          onPressed: () => _confirmLogout(context),
-                        ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
               ],

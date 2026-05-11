@@ -1,8 +1,10 @@
 import 'dart:async';
 import 'dart:convert';
 
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
+import 'package:plovlight_plugin/plovlight_plugin.dart';
 
 import 'package:plovy/core/connection/connectivity_service.dart';
 import 'package:plovy/core/mqtt/mqtt_service.dart';
@@ -33,6 +35,10 @@ class _HomeConnectivityChanged extends HomeEvent {
   final bool online;
 }
 
+class HomeFlashlightToggled extends HomeEvent {
+  const HomeFlashlightToggled();
+}
+
 // State
 
 class HomeState {
@@ -41,12 +47,14 @@ class HomeState {
     this.isMqttConnected = false,
     this.isOnline = true,
     this.showOfflineWarning = false,
+    this.isFlashlightOn = false,
   });
 
   final List<DoorEntry> entries;
   final bool isMqttConnected;
   final bool isOnline;
   final bool showOfflineWarning;
+  final bool isFlashlightOn;
 
   int get visitorCount => entries.length;
 
@@ -55,12 +63,14 @@ class HomeState {
     bool? isMqttConnected,
     bool? isOnline,
     bool? showOfflineWarning,
+    bool? isFlashlightOn,
   }) {
     return HomeState(
       entries: entries ?? this.entries,
       isMqttConnected: isMqttConnected ?? this.isMqttConnected,
       isOnline: isOnline ?? this.isOnline,
       showOfflineWarning: showOfflineWarning ?? this.showOfflineWarning,
+      isFlashlightOn: isFlashlightOn ?? this.isFlashlightOn,
     );
   }
 }
@@ -75,6 +85,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     on<_HomeMqttMessageReceived>(_onMqttMessage);
     on<_HomeMqttStatusChanged>(_onMqttStatus);
     on<_HomeConnectivityChanged>(_onConnectivityChanged);
+    on<HomeFlashlightToggled>(_onFlashlightToggled);
   }
 
   final MqttService _mqttService;
@@ -143,6 +154,19 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     // Reconnect MQTT when internet is restored
     if (!wasOnline) {
       await _mqttService.connect();
+    }
+  }
+
+  Future<void> _onFlashlightToggled(
+    HomeFlashlightToggled event,
+    Emitter<HomeState> emit,
+  ) async {
+    final bool next = !state.isFlashlightOn;
+    try {
+      await PlovlightPlugin.toggleTorch(enable: next);
+      emit(state.copyWith(isFlashlightOn: next));
+    } on PlatformException {
+      // Device has no flash or access error — state unchanged
     }
   }
 
