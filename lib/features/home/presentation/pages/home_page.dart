@@ -138,6 +138,14 @@ class HomePage extends StatelessWidget {
                       ),
                       const SizedBox(width: 8),
                       Expanded(
+                        child: OutlinedButton.icon(
+                          icon: const Icon(Icons.content_cut),
+                          label: const Text('Catalog'),
+                          onPressed: () => context.push(AppRoutes.catalog),
+                        ),
+                      ),
+                      const SizedBox(width: 8),
+                      Expanded(
                         child: FilledButton.icon(
                           icon: const Icon(Icons.logout),
                           label: const Text('Logout'),
