@@ -1,0 +1,126 @@
+{
+  "success": true,
+  "timestamp": "2026-05-11T12:00:00Z",
+  "data": [
+    {
+      "id": "hs_001",
+      "name": "Textured Crop",
+      "description": "Modern short hairstyle with textured top and faded sides.",
+      "category": "short",
+      "difficulty": "easy",
+      "gender": "male",
+      "faceShapes": ["oval", "square"],
+      "imageUrl": "https://images.unsplash.com/photo-1517832606299-7ae9b720a186",
+      "rating": 4.8,
+      "isTrending": true
+    },
+    {
+      "id": "hs_002",
+      "name": "Buzz Cut",
+      "description": "Minimal and clean haircut with very short length.",
+      "category": "short",
+      "difficulty": "easy",
+      "gender": "male",
+      "faceShapes": ["oval", "round"],
+      "imageUrl": "https://images.unsplash.com/photo-1500648767791-00dcc994a43e",
+      "rating": 4.5,
+      "isTrending": false
+    },
+    {
+      "id": "hs_003",
+      "name": "Pompadour",
+      "description": "Classic hairstyle with volume on top and short sides.",
+      "category": "medium",
+      "difficulty": "medium",
+      "gender": "male",
+      "faceShapes": ["oval", "rectangle"],
+      "imageUrl": "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d",
+      "rating": 4.9,
+      "isTrending": true
+    },
+    {
+      "id": "hs_004",
+      "name": "Curly Fringe",
+      "description": "Curly textured hairstyle with natural volume.",
+      "category": "medium",
+      "difficulty": "medium",
+      "gender": "unisex",
+      "faceShapes": ["round", "heart"],
+      "imageUrl": "https://images.unsplash.com/photo-1521119989659-a83eee488004",
+      "rating": 4.6,
+      "isTrending": true
+    },
+    {
+      "id": "hs_005",
+      "name": "Undercut",
+      "description": "Sharp contrast between long top and shaved sides.",
+      "category": "medium",
+      "difficulty": "hard",
+      "gender": "male",
+      "faceShapes": ["square", "oval"],
+      "imageUrl": "https://images.unsplash.com/photo-1492562080023-ab3db95bfbce",
+      "rating": 4.7,
+      "isTrending": false
+    },
+    {
+      "id": "hs_006",
+      "name": "Layered Bob",
+      "description": "Elegant layered bob hairstyle with soft texture.",
+      "category": "medium",
+      "difficulty": "medium",
+      "gender": "female",
+      "faceShapes": ["oval", "heart"],
+      "imageUrl": "https://images.unsplash.com/photo-1488426862026-3ee34a7d66df",
+      "rating": 4.8,
+      "isTrending": true
+    },
+    {
+      "id": "hs_007",
+      "name": "Long Waves",
+      "description": "Natural long hairstyle with soft waves.",
+      "category": "long",
+      "difficulty": "medium",
+      "gender": "female",
+      "faceShapes": ["oval", "round"],
+      "imageUrl": "https://images.unsplash.com/photo-1494790108377-be9c29b29330",
+      "rating": 4.9,
+      "isTrending": false
+    },
+    {
+      "id": "hs_008",
+      "name": "Wolf Cut",
+      "description": "Trendy layered hairstyle inspired by retro fashion.",
+      "category": "long",
+      "difficulty": "hard",
+      "gender": "unisex",
+      "faceShapes": ["heart", "oval"],
+      "imageUrl": "https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91",
+      "rating": 4.7,
+      "isTrending": true
+    },
+    {
+      "id": "hs_009",
+      "name": "Slick Back",
+      "description": "Clean and formal hairstyle with combed back hair.",
+      "category": "medium",
+      "difficulty": "easy",
+      "gender": "male",
+      "faceShapes": ["rectangle", "oval"],
+      "imageUrl": "https://images.unsplash.com/photo-1504593811423-6dd665756598",
+      "rating": 4.4,
+      "isTrending": false
+    },
+    {
+      "id": "hs_010",
+      "name": "French Crop",
+      "description": "Short crop hairstyle with straight fringe.",
+      "category": "short",
+      "difficulty": "easy",
+      "gender": "male",
+      "faceShapes": ["square", "round"],
+      "imageUrl": "https://images.unsplash.com/photo-1500648767791-00dcc994a43e",
+      "rating": 4.5,
+      "isTrending": true
+    }
+  ]
+}
