@@ -1,0 +1,126 @@
+{
+  "success": true,
+  "timestamp": "2026-05-12T09:30:00Z",
+  "data": [
+    {
+      "id": "hs_011",
+      "name": "Side Part",
+      "description": "Classic hairstyle with a clean side separation.",
+      "category": "short",
+      "difficulty": "easy",
+      "gender": "male",
+      "faceShapes": ["oval", "diamond"],
+      "imageUrl": "https://images.unsplash.com/photo-1504257432389-52343af06ae3",
+      "rating": 4.6,
+      "isTrending": false
+    },
+    {
+      "id": "hs_012",
+      "name": "Low Fade",
+      "description": "Smooth fade haircut with subtle transition on the sides.",
+      "category": "short",
+      "difficulty": "medium",
+      "gender": "male",
+      "faceShapes": ["square", "oval"],
+      "imageUrl": "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7",
+      "rating": 4.8,
+      "isTrending": true
+    },
+    {
+      "id": "hs_013",
+      "name": "Curtain Hair",
+      "description": "Middle-part hairstyle inspired by 90s fashion.",
+      "category": "medium",
+      "difficulty": "medium",
+      "gender": "unisex",
+      "faceShapes": ["heart", "oval"],
+      "imageUrl": "https://images.unsplash.com/photo-1506795660185-c85c4e2d0b9c",
+      "rating": 4.7,
+      "isTrending": true
+    },
+    {
+      "id": "hs_014",
+      "name": "Afro Fade",
+      "description": "Voluminous afro hairstyle combined with faded sides.",
+      "category": "medium",
+      "difficulty": "hard",
+      "gender": "male",
+      "faceShapes": ["round", "square"],
+      "imageUrl": "https://images.unsplash.com/photo-1524504388940-b1c1722653e1",
+      "rating": 4.9,
+      "isTrending": true
+    },
+    {
+      "id": "hs_015",
+      "name": "Messy Quiff",
+      "description": "Casual textured hairstyle with volume at the front.",
+      "category": "medium",
+      "difficulty": "medium",
+      "gender": "male",
+      "faceShapes": ["rectangle", "oval"],
+      "imageUrl": "https://images.unsplash.com/photo-1500648767791-00dcc994a43e",
+      "rating": 4.5,
+      "isTrending": false
+    },
+    {
+      "id": "hs_016",
+      "name": "Pixie Cut",
+      "description": "Short stylish haircut with soft layered texture.",
+      "category": "short",
+      "difficulty": "easy",
+      "gender": "female",
+      "faceShapes": ["heart", "oval"],
+      "imageUrl": "https://images.unsplash.com/photo-1521572267360-ee0c2909d518",
+      "rating": 4.8,
+      "isTrending": true
+    },
+    {
+      "id": "hs_017",
+      "name": "Braided Ponytail",
+      "description": "Long braided hairstyle gathered into a ponytail.",
+      "category": "long",
+      "difficulty": "hard",
+      "gender": "female",
+      "faceShapes": ["oval", "diamond"],
+      "imageUrl": "https://images.unsplash.com/photo-1487412720507-e7ab37603c6f",
+      "rating": 4.7,
+      "isTrending": false
+    },
+    {
+      "id": "hs_018",
+      "name": "Shag Cut",
+      "description": "Layered retro hairstyle with messy texture and movement.",
+      "category": "long",
+      "difficulty": "medium",
+      "gender": "unisex",
+      "faceShapes": ["round", "heart"],
+      "imageUrl": "https://images.unsplash.com/photo-1494790108377-be9c29b29330",
+      "rating": 4.6,
+      "isTrending": true
+    },
+    {
+      "id": "hs_019",
+      "name": "Man Bun",
+      "description": "Long hairstyle tied into a compact bun.",
+      "category": "long",
+      "difficulty": "easy",
+      "gender": "male",
+      "faceShapes": ["oval", "rectangle"],
+      "imageUrl": "https://images.unsplash.com/photo-1517841905240-472988babdf9",
+      "rating": 4.3,
+      "isTrending": false
+    },
+    {
+      "id": "hs_020",
+      "name": "Modern Mullet",
+      "description": "Contemporary version of the classic mullet hairstyle.",
+      "category": "medium",
+      "difficulty": "hard",
+      "gender": "unisex",
+      "faceShapes": ["diamond", "oval"],
+      "imageUrl": "https://images.unsplash.com/photo-1521119989659-a83eee488004",
+      "rating": 4.4,
+      "isTrending": true
+    }
+  ]
+}
